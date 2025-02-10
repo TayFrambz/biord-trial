@@ -67,15 +67,17 @@
     <div id="mobileOverlay" class="hidden fixed inset-0 bg-black/50 z-30"></div>
 
     <!-- Conteúdo Principal -->
-    <main class="fixed right-0 top-0 pt-16 md:pt-10 min-h-screen w-full md:w-3/4 lg:w-3/4 overflow-y-auto">
-        <div class="p-8 h-full overflow-y-auto">
-            <h1 class="text-3xl font-bold text-gray-800 mb-8">Restaurantes Parceiros</h1>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="restaurantsGrid">
-                <!-- Cards serão preenchidos por JS -->
-            </div>
+<main class="fixed right-0 inset-y-0 pt-16 md:pt-10 w-full md:w-3/4 lg:w-3/4 overflow-y-auto scrolling-touch">
+    <div class="p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Restaurantes Parceiros</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="restaurantsGrid">
+            <!-- Cards serão preenchidos por JS -->
         </div>
-    </main>
+    </div>
+</main>
+
+    
 
     <!-- Modal do Restaurante -->
     <div id="restaurantModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
