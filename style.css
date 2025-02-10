@@ -1,0 +1,90 @@
+/* Reset e Estilos Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    
+}
+
+/* Card de Login */
+#login-screen.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 400px;
+}
+
+/* ... (mantenha todo o restante do CSS da resposta anterior aqui) ... */
+
+/* Custom CSS */
+.dashboard-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all hover:bg-gray-700/50 cursor-pointer;
+}
+
+.dashboard-link.active {
+    @apply bg-green-600/20 text-green-400;
+}
+
+/* Animação de entrada */
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Animações */
+.sidebar-transition {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Overlay Mobile */
+.mobile-overlay {
+    @apply fixed inset-0 bg-black/50 z-20 md:hidden;
+}
+
+.sidebar-transition {
+    transition: transform 0.3s ease-in-out;
+}
+
+.dashboard-link {
+    @apply flex items-center px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition;
+}
+
+.dashboard-link.active {
+    @apply bg-green-100 text-green-600;
+}
+
+.animate-slide {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+/* Ajuste para o conteúdo principal */
+.main-content {
+    padding-top: 4rem; /* 64px - altura da navbar */
+}
+
+/* Ajuste para o menu lateral no desktop */
+@media (min-width: 768px) {
+    .sidebar {
+        top: 4rem; /* 64px - altura da navbar */
+        height: calc(100vh - 4rem); /* Altura total menos a navbar */
+    }
+}

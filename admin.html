@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <title>🌱 Biord | Painel Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        .animate-slide { animation: slideIn 0.3s ease-out; }
+        
+        .chart-bar {
+            height: 20px;
+            background: #10b981;
+            transition: width 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser || currentUser.type !== 'admin') window.location.href = 'index.html';
+    </script>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50 h-16">
+        <div class="flex items-center justify-between px-4 h-full">
+            <!-- Botão Menu Mobile -->
+            <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-800">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            
+            <!-- Logo -->
+            <div class="flex items-center gap-2">
+                <img src="assets/logo.png" class="h-8 w-8" alt="Logo">
+                <span class="font-bold text-gray-800">Biord</span>
+            </div>
+
+            <!-- Botão Sair -->
+            <button id="logoutButton" class="text-gray-600 hover:text-gray-800">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-72 bg-white shadow-xl transform -translate-x-full md:translate-x-0 sidebar-transition z-40">
+        <div class="p-6">
+            <!-- Botão Fechar Menu Mobile -->
+            <button id="closeMenuButton" class="md:hidden absolute top-4 right-4 text-gray-600 hover:text-gray-800">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+
+            <!-- Menu -->
+            <nav class="space-y-2">
+                <a data-view="dashboard" class="dashboard-link active">
+                    <i class="fas fa-chart-bar mr-2"></i> Dashboard
+                </a>
+                <br>
+                <a data-view="schedules" class="dashboard-link">
+                    <i class="fas fa-calendar-alt mr-2"></i> Agendamentos
+                </a>
+                <br>
+                <a data-view="users" class="dashboard-link">
+                    <i class="fas fa-users mr-2"></i> Usuários
+                </a>
+                <br>
+                <a data-view="companies" class="dashboard-link">
+                    <i class="fas fa-building mr-2"></i> Empresas
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Overlay Mobile -->
+    <div id="mobileOverlay" class="hidden fixed inset-0 bg-black/50 z-30"></div>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content pt-16 md:pt-10 md:ml-72 min-h-screen">
+        <div class="p-8">
+            <!-- Dashboard -->
+            <div id="dashboardView" class="view">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Dashboard Administrativo</h1>
+                
+                <!-- Estatísticas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <p class="text-gray-600">Empresas Cadastradas</p>
+                        <p class="text-3xl font-bold text-blue-600" id="totalCompanies">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <p class="text-gray-600">Usuários Cadastrados</p>
+                        <p class="text-3xl font-bold text-blue-600" id="totalUsers">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <p class="text-gray-600">Coleta Total (L)</p>
+                        <p class="text-3xl font-bold text-blue-600" id="totalCollected">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <p class="text-gray-600">Média por Usuário (L)</p>
+                        <p class="text-3xl font-bold text-blue-600" id="averagePerUser">0</p>
+                    </div>
+                </div>
+
+                <!-- Gráfico -->
+                <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Volume de Óleo Coletado</h2>
+                    <div id="oilChart" class="h-64">
+                        <!-- Gráfico mockado -->
+                        <div class="chart-bar mb-2" style="width: 70%">70%</div>
+                        <div class="chart-bar mb-2" style="width: 45%">45%</div>
+                        <div class="chart-bar" style="width: 85%">85%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agendamentos -->
+            <div id="schedulesView" class="view hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Agendamentos</h1>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div id="schedulesList" class="space-y-4">
+                        <!-- Agendamentos serão preenchidos por JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Usuários -->
+            <div id="usersView" class="view hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Usuários Cadastrados</h1>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div id="usersList" class="space-y-4">
+                        <!-- Usuários serão preenchidos por JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empresas -->
+            <div id="companiesView" class="view hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Empresas Parceiras</h1>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div id="companiesList" class="space-y-4">
+                        <!-- Empresas serão preenchidos por JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Dados Mockados
+        const mockData = {
+            companies: [
+                {
+                    name: "Eco Burger",
+                    address: "Rua Sustentável, 123",
+                    totalCollected: 700,
+                    pendingCollection: 100
+                },
+                {
+                    name: "Green Pizza",
+                    address: "Av. Ecológica, 456",
+                    totalCollected: 1300,
+                    pendingCollection: 150
+                },
+                {
+                    name: "Blue Pizza",
+                    address: "Av. Ecológica, 200",
+                    totalCollected: 300,
+                    pendingCollection: 50
+                },
+                {
+                    name: "Restaurante Avante",
+                    address: "Rua Futuro, 65",
+                    totalCollected: 800,
+                    pendingCollection: 90
+                },
+                {
+                    name: "Restaurante Azul",
+                    address: "Rua Unidos, 423",
+                    totalCollected: 1600,
+                    pendingCollection: 120
+                },
+                {
+                    name: "Pastelaria",
+                    address: "Av. Vida, 789",
+                    totalCollected: 2300,
+                    pendingCollection: 150
+                }
+            ],
+            users: [
+                { name: "Carlos Silva", collected: 15 },
+                { name: "Maria Santos", collected: 8 },
+                { name: "José Andrade", collected: 5 },
+                { name: "Marcelo Ferreira", collected: 10 }
+            ],
+            schedules: [
+                { date: "2024-03-25", company: "Eco Burger", volume: 100 },
+                { date: "2024-03-28", company: "Green Pizza", volume: 150 },
+                { date: "2024-03-22", company: "Blue Pizza", volume: 50 },
+                { date: "2024-03-15", company: "Restaurante Avante", volume: 120 },
+                { date: "2024-03-24", company: "Pastelaria", volume: 150 },
+            ]
+        };
+
+        // Inicialização
+        function init() {
+            // Atualiza estatísticas
+            document.getElementById('totalCompanies').textContent = mockData.companies.length;
+            document.getElementById('totalUsers').textContent = mockData.users.length;
+            document.getElementById('totalCollected').textContent = mockData.companies.reduce((acc, c) => acc + c.totalCollected, 0);
+            document.getElementById('averagePerUser').textContent = (mockData.users.reduce((acc, u) => acc + u.collected, 0) / mockData.users.length).toFixed(1);
+
+            // Renderiza agendamentos
+            const schedulesList = document.getElementById('schedulesList');
+            schedulesList.innerHTML = mockData.schedules.map(s => `
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p><span class="font-bold">Data:</span> ${new Date(s.date).toLocaleDateString()}</p>
+                    <p><span class="font-bold">Empresa:</span> ${s.company}</p>
+                    <p><span class="font-bold">Volume:</span> ${s.volume} litros</p>
+                </div>
+            `).join('');
+
+            // Renderiza usuários
+            const usersList = document.getElementById('usersList');
+            usersList.innerHTML = mockData.users.map(u => `
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold">${u.name}</p>
+                    <p>Volume coletado: ${u.collected} litros</p>
+                </div>
+            `).join('');
+
+            // Renderiza empresas
+            const companiesList = document.getElementById('companiesList');
+            companiesList.innerHTML = mockData.companies.map(c => `
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="font-bold">${c.name}</p>
+                    <p>Endereço: ${c.address}</p>
+                    <p>Total coletado: ${c.totalCollected} litros</p>
+                    <p>Pendente: ${c.pendingCollection} litros</p>
+                </div>
+            `).join('');
+        }
+
+        // Controle de Menu Mobile
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const closeMenuButton = document.getElementById('closeMenuButton');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('mobileOverlay');
+
+        mobileMenuButton.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('animate-slide');
+            overlay.classList.remove('hidden');
+        });
+
+        closeMenuButton.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
+
+        // Logout
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        });
+
+        // Navegação
+        document.querySelectorAll('.dashboard-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelectorAll('.view').forEach(view => view.classList.add('hidden'));
+                document.getElementById(`${link.dataset.view}View`).classList.remove('hidden');
+                document.querySelectorAll('.dashboard-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Inicia o sistema
+        init();
+    </script>
+</body>
+</html>

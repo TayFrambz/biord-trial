@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <title>🌱 Biord | Área da Empresa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        .animate-slide { animation: slideIn 0.3s ease-out; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser || currentUser.type !== 'empresa') window.location.href = 'index.html';
+    </script>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50 h-16">
+        <div class="flex items-center justify-between px-4 h-16">
+            <!-- Botão Menu Mobile -->
+            <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-800">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            
+            <!-- Logo -->
+            <div class="flex items-center gap-2">
+                <img src="assets/logo.png" class="h-8 w-8" alt="Logo">
+                <span class="font-bold text-gray-800">Biord</span>
+            </div>
+
+            <!-- Botão Sair -->
+            <button id="logoutButton" class="text-gray-600 hover:text-gray-800">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-72 bg-white shadow-xl transform -translate-x-full md:translate-x-0 sidebar-transition z-40">
+        <div class="p-6">
+            <!-- Botão Fechar Menu Mobile -->
+            <button id="closeMenuButton" class="md:hidden absolute top-4 right-4 text-gray-600 hover:text-gray-800">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+
+            <!-- Menu -->
+            <nav class="space-y-2">
+                <a data-view="home" class="dashboard-link active">
+                    <i class="fas fa-home mr-2"></i> Início
+                </a>
+                <a data-view="schedule" class="dashboard-link">
+                    <i class="fas fa-calendar-alt mr-2"></i> Agendar Coleta
+                </a>
+                <a data-view="coupons" class="dashboard-link">
+                    <i class="fas fa-ticket-alt mr-2"></i> Cupons
+                </a>
+                <a data-view="account" class="dashboard-link">
+                    <i class="fas fa-cog mr-2"></i> Minha Conta
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Overlay Mobile -->
+    <div id="mobileOverlay" class="hidden fixed inset-0 bg-black/50 z-30"></div>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content pt-16 md:pt-10 md:ml-72 min-h-screen">
+        <div class="p-8">
+            <!-- Views -->
+            <div id="homeView" class="view">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Bem-vindo, <span id="companyName"></span></h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Próximas Coletas</h2>
+                        <div id="upcomingCollections" class="space-y-4"></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Resumo</h2>
+                        <div class="space-y-3">
+                            <p><span class="font-bold">Total de Coletas:</span> <span id="totalCollections">0</span></p>
+                            <p><span class="font-bold">Cupons Ativos:</span> <span id="activeCoupons">0</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="scheduleView" class="view hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Agendar Coleta</h1>
+                <form id="scheduleForm" class="bg-white p-6 rounded-xl shadow-md max-w-2xl">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2">Data e Hora</label>
+                            <input type="datetime-local" id="collectionDate" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Volume (Litros)</label>
+                            <input type="number" id="collectionVolume" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" min="1" required>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition">
+                            Agendar Coleta
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="couponsView" class="view hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Gerenciar Cupons</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Cadastrar Cupom</h2>
+                        <form id="createCouponForm" class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 mb-2">Código do Cupom</label>
+                                <input type="text" id="couponCode" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">Desconto (%)</label>
+                                <input type="number" id="couponDiscount" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" min="1" max="100" required>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition">
+                                Cadastrar Cupom
+                            </button>
+                        </form>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Validar Cupom</h2>
+                        <form id="validateCouponForm" class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 mb-2">Código do Cupom</label>
+                                <input type="text" id="couponToValidate" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition">
+                                Validar Cupom
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="accountView" class="view hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Minha Conta</h1>
+                <form id="companyForm" class="bg-white p-6 rounded-xl shadow-md max-w-2xl">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2">Logo</label>
+                            <input type="file" id="companyLogo" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" accept="image/*">
+                            <img id="logoPreview" src="" alt="Logo Preview" class="mt-2 w-32 h-32 object-cover rounded-lg hidden">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Nome</label>
+                            <input type="text" id="companyNameInput" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Endereço</label>
+                            <input type="text" id="companyAddress" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Telefone</label>
+                            <input type="tel" id="companyPhone" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition">
+                            Atualizar Dados
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirmationModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl w-full max-w-md p-6 animate-slide">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Confirmar Agendamento</h3>
+            <p id="confirmationDetails"></p>
+            <div class="flex gap-4 mt-6">
+                <button id="confirmButton" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition">
+                    Confirmar
+                </button>
+                <button id="cancelButton" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados Mockados
+        const company = {
+            name: "Pizza Green",
+            address: "Rua Sustentável, 123",
+            phone: "(11) 1234-5678",
+            logo: null,
+            collections: [],
+            coupons: []
+        };
+
+        // Inicialização
+        function init() {
+            // Carrega dados da empresa
+            document.getElementById('companyName').textContent = company.name;
+            document.getElementById('companyNameInput').value = company.name;
+            document.getElementById('companyAddress').value = company.address;
+            document.getElementById('companyPhone').value = company.phone;
+            updateCollections();
+            updateCoupons();
+        }
+
+        // Controle de Menu Mobile
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const closeMenuButton = document.getElementById('closeMenuButton');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('mobileOverlay');
+
+        mobileMenuButton.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('animate-slide');
+            overlay.classList.remove('hidden');
+        });
+
+        closeMenuButton.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
+
+        // Logout
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        });
+
+        // Navegação
+        document.querySelectorAll('.dashboard-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelectorAll('.view').forEach(view => view.classList.add('hidden'));
+                document.getElementById(`${link.dataset.view}View`).classList.remove('hidden');
+                document.querySelectorAll('.dashboard-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Agendamento de Coleta
+        document.getElementById('scheduleForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const date = document.getElementById('collectionDate').value;
+            const volume = document.getElementById('collectionVolume').value;
+
+            document.getElementById('confirmationDetails').textContent = `Data: ${new Date(date).toLocaleString()}\nVolume: ${volume} litros`;
+            document.getElementById('confirmationModal').classList.remove('hidden');
+        });
+
+        document.getElementById('confirmButton').addEventListener('click', () => {
+            const newCollection = {
+                date: document.getElementById('collectionDate').value,
+                volume: document.getElementById('collectionVolume').value,
+                status: 'Agendado'
+            };
+            
+            company.collections.push(newCollection);
+            updateCollections();
+            document.getElementById('confirmationModal').classList.add('hidden');
+            alert('Coleta agendada com sucesso!');
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', () => {
+            document.getElementById('confirmationModal').classList.add('hidden');
+        });
+
+        // Gestão de Cupons
+        document.getElementById('createCouponForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const coupon = {
+                code: document.getElementById('couponCode').value,
+                discount: document.getElementById('couponDiscount').value,
+                valid: true
+            };
+            
+            company.coupons.push(coupon);
+            updateCoupons();
+            alert('Cupom cadastrado com sucesso!');
+        });
+
+        document.getElementById('validateCouponForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const code = document.getElementById('couponToValidate').value;
+            const coupon = company.coupons.find(c => c.code === code);
+            
+            if (coupon) {
+                alert(coupon.valid ? `Cupom válido! Desconto de ${coupon.discount}%` : 'Cupom inválido ou expirado');
+            } else {
+                alert('Cupom não encontrado!');
+            }
+        });
+
+        // Atualização de Dados
+        document.getElementById('companyForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            company.name = document.getElementById('companyNameInput').value;
+            company.address = document.getElementById('companyAddress').value;
+            company.phone = document.getElementById('companyPhone').value;
+            alert('Dados atualizados com sucesso!');
+        });
+
+        // Upload de Logo
+        document.getElementById('companyLogo').addEventListener('change', function(e) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const preview = document.getElementById('logoPreview');
+                preview.src = reader.result;
+                preview.classList.remove('hidden');
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        });
+
+        // Funções Auxiliares
+        function updateCollections() {
+            const container = document.getElementById('upcomingCollections');
+            container.innerHTML = company.collections.map(collection => `
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p><span class="font-bold">Data:</span> ${new Date(collection.date).toLocaleString()}</p>
+                    <p><span class="font-bold">Volume:</span> ${collection.volume} litros</p>
+                    <p><span class="font-bold">Status:</span> ${collection.status}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('totalCollections').textContent = company.collections.length;
+        }
+
+        function updateCoupons() {
+            document.getElementById('activeCoupons').textContent = company.coupons.length;
+        }
+
+        // Inicia o sistema
+        init();
+    </script>
+</body>
+</html>
