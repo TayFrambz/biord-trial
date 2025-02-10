@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="assets/favicon.png">
-    <title>🌱 Biord | Área do Usuário</title>
+    <title>Biord | Área do Usuário</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="shortcut icon" type="imagex/png" href="./assets/iconbiord.ico.ico">
     <style>
         @keyframes slideIn {
             from { transform: translateX(100%); }
@@ -43,9 +44,12 @@
     </nav>
 
     <!-- Sidebar -->
-    <div id="sidebar" class="fixed top-5 right-10 h-full w-64 bg-white text-white p-5 
-    transform -translate-x-full md:translate-x-10 
-    transition-transform duration-300 z-40">
+    <div id="sidebar" class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-72 bg-white shadow-xl transform -translate-x-full md:translate-x-0 sidebar-transition z-40">
+
+    <button id="closeMenuButton" class="md:hidden absolute top-4 right-4 text-gray-600 hover:text-gray-800">
+        <i class="fas fa-times text-xl"></i>
+    </button>
+
         <div class="p-6">
             <div class="text-center mb-8">
                 <img src="assets/user.webp" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-green-200" alt="Avatar">
@@ -227,21 +231,28 @@
             });
         }
 
-        // Controle do Menu Mobile
+        // Controle de Menu Mobile
         const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const closeMenuButton = document.getElementById('closeMenuButton');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('mobileOverlay');
 
         mobileMenuButton.addEventListener('click', () => {
-            sidebar.classList.remove('translate-x-full');
+            sidebar.classList.remove('-translate-x-full');
             sidebar.classList.add('animate-slide');
             overlay.classList.remove('hidden');
         });
 
-        overlay.addEventListener('click', () => {
-            sidebar.classList.add('translate-x-full');
+        closeMenuButton.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
             overlay.classList.add('hidden');
         });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
+
 
         // Logout
         document.getElementById('logoutButton').addEventListener('click', () => {
