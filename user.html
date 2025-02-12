@@ -32,13 +32,14 @@
             
             <!-- Logo -->
             <div class="flex items-center gap-2">
-                <img src="assets/logo.png" class="h-8 w-8" alt="Logo">
+                <img src="assets/iconbiord.ico.ico" class="h-8 w-8" alt="Logo">
                 <span class="font-bold text-gray-800">Biord</span>
             </div>
 
             <!-- Botão Sair -->
-            <button id="logoutButton" class="text-gray-600 hover:text-gray-800">
-                <i class="fas fa-sign-out-alt"></i> Sair
+            <button id="logoutButton" class="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-purple-600 group transition-all duration-200">
+                <i class="fas fa-sign-out-alt text-sm group-hover:-translate-x-0.5"></i>
+                <span class="font-medium border-b border-transparent group-hover:border-purple-400">Sair</span>
             </button>
         </div>
     </nav>
@@ -50,17 +51,34 @@
         <i class="fas fa-times text-xl"></i>
     </button>
 
-        <div class="p-6">
-            <div class="text-center mb-8">
-                <img src="assets/user.webp" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-green-200" alt="Avatar">
-                <h2 class="text-xl font-bold text-gray-800" id="userName"></h2>
-                <p class="text-gray-600 mt-1" id="userPhone"></p>
-                <div class="mt-4 bg-blue-50 p-4 rounded-xl">
-                    <p class="text-sm font-semibold text-blue-800">PONTOS ACUMULADOS</p>
-                    <p class="text-3xl font-bold text-blue-600" id="userPoints"></p>
+    <div class="p-6 md:p-8 max-w-2xl mx-auto">
+        <div class="text-center mb-8">
+            <!-- Avatar com efeito de destaque -->
+            <div class="relative inline-block mb-6 group">
+                <img src="assets/user.webp" 
+                     class="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto border-4 border-white shadow-xl transform transition-all duration-300 group-hover:scale-105"
+                     alt="Avatar do usuário">
+                <div class="absolute inset-0 rounded-full border-4 border-transparent bg-gradient-to-r from-blue-200 to-green-200 opacity-0 group-hover:opacity-100 -z-10 transition-opacity duration-300"></div>
+            </div>
+    
+            <!-- Informações do usuário -->
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-1" id="userName"></h2>
+            <p class="text-gray-500 md:text-lg" id="userPhone"></p>
+    
+            <!-- Card de pontos -->
+            <div class="mt-6 bg-gradient-to-br from-blue-600 to-blue-300 p-6 rounded-2xl shadow-lg text-white transform transition hover:shadow-xl hover:-translate-y-1 duration-300">
+                <div class="flex items-center justify-center gap-3">
+                    <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                        <i class="fas fa-star text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold opacity-90">PONTOS ACUMULADOS</p>
+                        <p class="text-3xl md:text-4xl font-bold mt-1" id="userPoints"></p>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Overlay Mobile -->
@@ -128,7 +146,7 @@
         const user = {
             name: "Carlos Silva",
             phone: "(11) 98765-4321",
-            points: 1250,
+            points: 1450,
             photo: "assets/user.png"
         };
 

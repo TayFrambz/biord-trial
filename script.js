@@ -1,29 +1,5 @@
 // Dados Mockados
-const users = [
-    {
-        type: 'user',
-        username: 'user',
-        password: '123',
-        name: 'João Silva'
-    },
-    {
-        type: 'empresa',
-        username: 'empresa',
-        password: '123',
-        name: 'Eco Óleo Ltda',
-        address: 'Rua Sustentável, 123',
-        phone: '(11) 9999-8888',
-        logo: null,
-        collections: [],
-        coupons: []
-    },
-    {
-        type: 'admin',
-        username: 'admin',
-        password: 'admin',
-        name: 'Administrador'
-    }
-];
+
 
 // Sistema de Login
 document.getElementById('login-form').addEventListener('submit', (e) => {

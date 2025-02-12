@@ -37,14 +37,17 @@
             </button>
             
             <!-- Logo -->
-            <div class="flex items-center gap-2">
-                <img src="assets/logo.png" class="h-8 w-8" alt="Logo">
-                <span class="font-bold text-gray-800">Biord</span>
+            <div class="bg-white px-6 py-4 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <img src="assets/iconbiord.ico.ico" class="h-8 w-8 rounded-lg" alt="Biord Logo">
+                    <span class="font-bold text-gray-800 text-lg">Biord</span>
+                </div>
             </div>
 
             <!-- Botão Sair -->
-            <button id="logoutButton" class="text-gray-600 hover:text-gray-800">
-                <i class="fas fa-sign-out-alt"></i> Sair
+            <button id="logoutButton" class="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-purple-600 group transition-all duration-200">
+                <i class="fas fa-sign-out-alt text-sm group-hover:-translate-x-0.5"></i>
+                <span class="font-medium border-b border-transparent group-hover:border-purple-400">Sair</span>
             </button>
         </div>
     </nav>
@@ -59,20 +62,23 @@
 
             <!-- Menu -->
             <nav class="space-y-2">
-                <a data-view="dashboard" class="dashboard-link active">
-                    <i class="fas fa-chart-bar mr-2"></i> Dashboard
+                <a data-view="dashboard" class="dashboard-link active flex items-center p-3 mb-2 bg-indigo-50 text-indigo-700 rounded-lg transition-all">
+                    <i class="fas fa-chart-pie w-6 text-center mr-2"></i> Dashboard
                 </a>
                 <br>
-                <a data-view="schedules" class="dashboard-link">
-                    <i class="fas fa-calendar-alt mr-2"></i> Agendamentos
+                <a data-view="schedules" class="dashboard-link sidebar-link flex items-center p-3 hover:bg-gray-50 rounded-lg group">
+                    <i class="fas fa-calendar-alt text-blue-500 w-6 text-center mr-2 hover:bg-gray-50 rounded-lg group"></i>
+                    <span class="text-gray-700 group-hover:text-blue-600">Agendamentos</span>
                 </a>
                 <br>
-                <a data-view="users" class="dashboard-link">
-                    <i class="fas fa-users mr-2"></i> Usuários
+                <a data-view="users" class="dashboard-link sidebar-link flex items-center p-3 hover:bg-gray-50 rounded-lg group">
+                    <i class="fas fa-users text-green-500 w-6 text-center mr-2"></i>
+                    <span class="text-gray-700 group-hover:text-green-600">Usuários</span>
                 </a>
                 <br>
-                <a data-view="companies" class="dashboard-link">
-                    <i class="fas fa-building mr-2"></i> Empresas
+                <a data-view="companies" class="dashboard-link sidebar-link flex items-center p-3 hover:bg-gray-50 rounded-lg group">
+                    <i class="fas fa-building text-purple-500 w-6 text-center mr-2"></i>
+                    <span class="text-gray-700 group-hover:text-purple-600">Empresas</span>
                 </a>
             </nav>
         </div>
@@ -109,30 +115,108 @@
                 </div>
 
                 <!-- Gráfico -->
+               
                 <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">Volume de Óleo Coletado</h2>
-                    <div id="oilChart" class="h-64">
-                        <!-- Gráfico mockado -->
-                        <div class="chart-bar mb-2" style="width: 70%">70%</div>
-                        <div class="chart-bar mb-2" style="width: 45%">45%</div>
-                        <div class="chart-bar" style="width: 85%">85%</div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">Volume de Coleta por Tipo</h2>
+                    
+                    <div class="flex items-end justify-between h-72 gap-3 text-sm">
+                        <!-- Novembro 2024 -->
+                        <div class="flex flex-col items-center flex-1 h-full">
+                            <div class="flex items-end justify-center w-full h-full gap-1">
+                                <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
+                                     style="height: 70%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">145</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
+                                </div>
+                                <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
+                                     style="height: 40%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">85</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                </div>
+                            </div>
+                            <span class="mt-2 text-gray-600 font-medium">Nov/24</span>
+                        </div>
+                
+                        <!-- Dezembro 2024 -->
+                        <div class="flex flex-col items-center flex-1 h-full">
+                            <div class="flex items-end justify-center w-full h-full gap-1">
+                                <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
+                                     style="height: 35%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">72</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
+                                </div>
+                                <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
+                                     style="height: 85%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">168</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                </div>
+                            </div>
+                            <span class="mt-2 text-gray-600 font-medium">Dez/24</span>
+                        </div>
+                
+                        <!-- Janeiro 2025 -->
+                        <div class="flex flex-col items-center flex-1 h-full">
+                            <div class="flex items-end justify-center w-full h-full gap-1">
+                                <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
+                                     style="height: 90%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">180</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
+                                </div>
+                                <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
+                                     style="height: 60%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">120</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                </div>
+                            </div>
+                            <span class="mt-2 text-gray-600 font-medium">Jan/25</span>
+                        </div>
+                
+                        <!-- Fevereiro 2025 -->
+                        <div class="flex flex-col items-center flex-1 h-full">
+                            <div class="flex items-end justify-center w-full h-full gap-1">
+                                <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
+                                     style="height: 50%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">100</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
+                                </div>
+                                <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
+                                     style="height: 75%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">150</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                </div>
+                            </div>
+                            <span class="mt-2 text-gray-600 font-medium">Fev/25</span>
+                        </div>
+                    </div>
+                
+                    <!-- Legenda -->
+                    <div class="flex justify-center gap-6 mt-6">
+                        <div class="flex items-center gap-2">
+                            <div class="w-4 h-4 bg-indigo-500 rounded-sm"></div>
+                            <span class="text-sm text-gray-600">Estabelecimentos</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-4 h-4 bg-pink-500 rounded-sm"></div>
+                            <span class="text-sm text-gray-600">Usuários</span>
+                        </div>
                     </div>
                 </div>
+                
             </div>
 
             <!-- Agendamentos -->
             <div id="schedulesView" class="view hidden">
-                <h1 class="text-3xl font-bold text-gray-800 mb-8">Agendamentos</h1>
-                <div class="bg-white p-6 rounded-xl shadow-md">
+                <h1 class="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">Agendamentos</h1>
+                <div class="bg-white p-6 top-4 rounded-xl shadow-md">
                     <div id="schedulesList" class="space-y-4">
-                        <!-- Agendamentos serão preenchidos por JS -->
+                        
                     </div>
                 </div>
             </div>
 
             <!-- Usuários -->
             <div id="usersView" class="view hidden">
-                <h1 class="text-3xl font-bold text-gray-800 mb-8">Usuários Cadastrados</h1>
+                <h1 class="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">Usuários Cadastrados</h1>
                 <div class="bg-white p-6 rounded-xl shadow-md">
                     <div id="usersList" class="space-y-4">
                         <!-- Usuários serão preenchidos por JS -->
@@ -219,31 +303,123 @@
             // Renderiza agendamentos
             const schedulesList = document.getElementById('schedulesList');
             schedulesList.innerHTML = mockData.schedules.map(s => `
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <p><span class="font-bold">Data:</span> ${new Date(s.date).toLocaleDateString()}</p>
-                    <p><span class="font-bold">Empresa:</span> ${s.company}</p>
-                    <p><span class="font-bold">Volume:</span> ${s.volume} litros</p>
+
+                        <div class="p-5 top-8 bg-white rounded-xl border-l-4 border-blue-400 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                        <div class="flex-1 space-y-2">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-blue-300 rounded-lg">
+                                    <i class="fas fa-calendar-check text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-800">
+                                        ${new Date(s.date).toLocaleDateString()}
+                                    </p>
+                                    <p class="text-sm text-gray-500">
+                                        Agendamento para coleta
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 pl-11">
+                                <div class="flex items-center gap-2 text-blue-700">
+                                    <i class="fas fa-building"></i>
+                                    <span class="text-sm">${s.company}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-lg">
+                            <i class="fas fa-weight-hanging text-blue-800"></i>
+                            <span class="text-blue-800 font-medium">${s.volume} Litros</span>
+                        </div>
+                    </div>
                 </div>
-            `).join('');
+                    `).join('');
 
             // Renderiza usuários
             const usersList = document.getElementById('usersList');
             usersList.innerHTML = mockData.users.map(u => `
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <p class="font-bold">${u.name}</p>
-                    <p>Volume coletado: ${u.collected} litros</p>
-                </div>
+                
+                    <div class="bg-gradient-to-br from-gray-100 to-white p-6 rounded-xl shadow-lg border-l-4 border-blue-500 hover:shadow-xl transition-all duration-300 group">
+    <div class="flex items-start gap-4">
+        <!-- Ícone -->
+        <div class="p-2 bg-blue-700/30 rounded-lg">
+            <i class="fas fa-user-tie text-black text-xl"></i>
+        </div>
+
+        <!-- Conteúdo -->
+        <div class="flex-1 space-y-2">
+            <p class="text-xl font-bold text-black">${u.name}</p>
+            
+            <div class="flex items-center gap-3">
+                <i class="fas fa-oil-can text-blue-600 text-sm"></i>
+                <p class="text-blue-900">
+                    <span class="font-semibold text-black">${u.collected}L</span> 
+                    coletados
+                </p>
+            </div>
+        </div>
+
+        <!-- Badge de Destaque CONDICIONAL -->
+        ${u.collected >= 10 ? `
+            <span class="bg-blue-600/40 text-black px-3 py-1 rounded-full text-sm">
+                Top Collector
+            </span>
+        ` : ''}
+    </div>
+</div>
             `).join('');
 
             // Renderiza empresas
             const companiesList = document.getElementById('companiesList');
             companiesList.innerHTML = mockData.companies.map(c => `
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <p class="font-bold">${c.name}</p>
-                    <p>Endereço: ${c.address}</p>
-                    <p>Total coletado: ${c.totalCollected} litros</p>
-                    <p>Pendente: ${c.pendingCollection} litros</p>
+                
+
+                <div class="bg-gradient-to-br from-grey to-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-blue-400 group">
+    <div class="flex items-start gap-4">
+        <!-- Ícone -->
+        <div class="shrink-0 p-3 bg-blue-100 rounded-full">
+            <i class="fas fa-building text-blue-600 text-xl"></i>
+        </div>
+
+        <!-- Conteúdo -->
+        <div class="flex-1 space-y-3">
+            <h3 class="text-xl font-bold text-blue-800">${c.name}</h3>
+            
+            <div class="space-y-2">
+                <div class="flex items-center gap-2 text-blue-600">
+                    <i class="fas fa-map-marker-alt text-sm"></i>
+                    <p class="text-sm">${c.address}</p>
                 </div>
+
+                <div class="flex flex-wrap gap-4">
+                    <!-- Total Coletado -->
+                    <div class="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full">
+                        <i class="fas fa-check-circle text-blue-500"></i>
+                        <span class="text-sm font-medium text-blue-800">
+                            ${c.totalCollected}L coletados
+                        </span>
+                    </div>
+
+                    <!-- Pendente -->
+                    <div class="flex items-center gap-2 bg-blue-100/50 px-3 py-1.5 rounded-full">
+                        <i class="fas fa-clock text-blue-400"></i>
+                        <span class="text-sm font-medium text-blue-800">
+                            ${c.pendingCollection}L pendentes
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status -->
+        ${c.pendingCollection > 0 ? `
+        <div class="flex items-center gap-1 text-sm text-blue-600">
+            <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+            <span>Ativa</span>
+        </div>
+        ` : ''}
+    </div>
+</div>
             `).join('');
         }
 
