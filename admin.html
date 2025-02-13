@@ -8,7 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="shortcut icon" type="imagex/png" href="./assets/iconbiord.ico.ico">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         @keyframes slideIn {
             from { transform: translateX(-100%); }
@@ -116,158 +115,95 @@
                 </div>
 
                 <!-- Gráfico -->
-                
                
-                <div class="bg-white p-6 rounded-xl shadow-md mb-8 relative">
+                <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">Volume de Coleta por Tipo</h2>
                     
-                    <!-- Botão de Gerar PDF -->
-                    <button id="generatePdf" class="md:absolute md:top-4 md:right-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all flex items-center gap-2">
-                        <i class="fas fa-file-pdf"></i>
-                        Gerar Relatório
-                    </button>
-                
-                    <h2 class="text-xl font-bold text-gray-800 mb-6">Volume de Coleta por Mês</h2>
-                    
-                    
-                        <div class="flex items-end justify-between h-72 gap-3 text-sm">
-                            <!-- Novembro 2024 -->
-                            <div class="flex flex-col items-center flex-1 h-full">
-                                <div class="flex items-end justify-center w-full h-full gap-1">
-                                    <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
-                                         style="height: 70%">
-                                        <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">145</span>
-                                        <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
-                                    </div>
-                                    <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
-                                         style="height: 40%">
-                                        <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">85</span>
-                                        <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
-                                    </div>
+                    <div class="flex items-end justify-between h-72 gap-3 text-sm">
+                        <!-- Novembro 2024 -->
+                        <div class="flex flex-col items-center flex-1 h-full">
+                            <div class="flex items-end justify-center w-full h-full gap-1">
+                                <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
+                                     style="height: 70%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">145</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
                                 </div>
-                                <span class="mt-2 text-gray-600 font-medium">Nov/24</span>
-                            </div>
-                    
-                            <!-- Dezembro 2024 -->
-                            <div class="flex flex-col items-center flex-1 h-full">
-                                <div class="flex items-end justify-center w-full h-full gap-1">
-                                    <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
-                                         style="height: 35%">
-                                        <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">72</span>
-                                        <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
-                                    </div>
-                                    <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
-                                         style="height: 85%">
-                                        <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">168</span>
-                                        <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
-                                    </div>
+                                <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
+                                     style="height: 40%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">85</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
                                 </div>
-                                <span class="mt-2 text-gray-600 font-medium">Dez/24</span>
                             </div>
-                    
-                            <!-- Janeiro 2025 -->
-                            <div class="flex flex-col items-center flex-1 h-full">
-                                <div class="flex items-end justify-center w-full h-full gap-1">
-                                    <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
-                                         style="height: 90%">
-                                        <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">180</span>
-                                        <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
-                                    </div>
-                                    <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
-                                         style="height: 60%">
-                                        <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">120</span>
-                                        <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
-                                    </div>
-                                </div>
-                                <span class="mt-2 text-gray-600 font-medium">Jan/25</span>
-                            </div>
-                    
-                            <!-- Fevereiro 2025 -->
-                            <div class="flex flex-col items-center flex-1 h-full">
-                                <div class="flex items-end justify-center w-full h-full gap-1">
-                                    <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
-                                         style="height: 50%">
-                                        <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">100</span>
-                                        <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
-                                    </div>
-                                    <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
-                                         style="height: 75%">
-                                        <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">150</span>
-                                        <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
-                                    </div>
-                                </div>
-                                <span class="mt-2 text-gray-600 font-medium">Fev/25</span>
-                            </div>
+                            <span class="mt-2 text-gray-600 font-medium">Nov/24</span>
                         </div>
-                    
-                        <!-- Legenda -->
-                        <div class="flex justify-center gap-6 mt-6">
-                            <div class="flex items-center gap-2">
-                                <div class="w-4 h-4 bg-indigo-500 rounded-sm"></div>
-                                <span class="text-sm text-gray-600">Estabelecimentos</span>
+                
+                        <!-- Dezembro 2024 -->
+                        <div class="flex flex-col items-center flex-1 h-full">
+                            <div class="flex items-end justify-center w-full h-full gap-1">
+                                <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
+                                     style="height: 35%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">72</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
+                                </div>
+                                <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
+                                     style="height: 85%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">168</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-4 h-4 bg-pink-500 rounded-sm"></div>
-                                <span class="text-sm text-gray-600">Usuários</span>
-                            </div>
+                            <span class="mt-2 text-gray-600 font-medium">Dez/24</span>
                         </div>
-                    
                 
-                <script>
-                document.getElementById('generatePdf').addEventListener('click', generatePDF);
+                        <!-- Janeiro 2025 -->
+                        <div class="flex flex-col items-center flex-1 h-full">
+                            <div class="flex items-end justify-center w-full h-full gap-1">
+                                <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
+                                     style="height: 90%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">180</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
+                                </div>
+                                <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
+                                     style="height: 60%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">120</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                </div>
+                            </div>
+                            <span class="mt-2 text-gray-600 font-medium">Jan/25</span>
+                        </div>
                 
-                function generatePDF() {
-                    const { jsPDF } = window.jspdf;
-                    const doc = new jsPDF();
-                    
-                    // Configurações do PDF
-                    const title = "Relatório Biord - Coletas";
-                    const date = new Date().toLocaleDateString('pt-BR');
-                    
-                    // Conteúdo do PDF
-                    doc.setFontSize(18);
-                    doc.text(title, 15, 20);
-                    doc.setFontSize(12);
-                    doc.setTextColor(100);
-                    doc.text(`Data do Relatório: ${date}`, 15, 30);
-                    doc.text("Empresa: Biord - Soluções Sustentáveis", 15, 35);
+                        <!-- Fevereiro 2025 -->
+                        <div class="flex flex-col items-center flex-1 h-full">
+                            <div class="flex items-end justify-center w-full h-full gap-1">
+                                <div class="w-1/2 bg-indigo-500 hover:bg-indigo-600 transition-colors relative rounded-t"
+                                     style="height: 50%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">100</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Estab.</span>
+                                </div>
+                                <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
+                                     style="height: 75%">
+                                    <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">150</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                </div>
+                            </div>
+                            <span class="mt-2 text-gray-600 font-medium">Fev/25</span>
+                        </div>
+                    </div>
                 
-                    // Adicionar dados
-                    let yPosition = 45;
-                    doc.setFontSize(14);
-                    doc.setTextColor(0);
-                    doc.text("Dados de Coleta:", 15, yPosition);
-                    
-                    // Dados mockados (substitua com seus dados reais)
-                    const chartData = [
-                        { month: 'Nov/24', estabelecimentos: 145, usuarios: 85 },
-                        { month: 'Dez/24', estabelecimentos: 72, usuarios: 168 },
-                        { month: 'Jan/25', estabelecimentos: 180, usuarios: 120 },
-                        { month: 'Fev/25', estabelecimentos: 100, usuarios: 150 }
-                    ];
+                    <!-- Legenda -->
+                    <div class="flex justify-center gap-6 mt-6">
+                        <div class="flex items-center gap-2">
+                            <div class="w-4 h-4 bg-indigo-500 rounded-sm"></div>
+                            <span class="text-sm text-gray-600">Estabelecimentos</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-4 h-4 bg-pink-500 rounded-sm"></div>
+                            <span class="text-sm text-gray-600">Usuários</span>
+                        </div>
+                    </div>
+                </div>
                 
-                    // Adicionar tabela
-                    chartData.forEach((data, index) => {
-                        yPosition += 10;
-                        doc.setFontSize(12);
-                        doc.setTextColor(0);
-                        doc.text(`${data.month}:`, 15, yPosition);
-                        doc.setTextColor(100);
-                        doc.text(`Estab.: ${data.estabelecimentos}  Usuários: ${data.usuarios}`, 40, yPosition);
-                        
-                        // Barrinhas de exemplo
-                        doc.setFillColor(76, 81, 191); // Indigo
-                        doc.rect(100, yPosition - 3, data.estabelecimentos/4, 4, 'F');
-                        doc.setFillColor(231, 70, 148); // Pink
-                        doc.rect(100, yPosition + 2, data.usuarios/4, 4, 'F');
-                    });
-                
-                    // Salvar PDF
-                    doc.save(`relatorio-biord-${date.replace(/\//g,'-')}.pdf`);
-                }
-                </script>
-                
-                    
-                   
+            </div>
+
             <!-- Agendamentos -->
             <div id="schedulesView" class="view hidden">
                 <h1 class="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">Agendamentos</h1>
