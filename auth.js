@@ -46,8 +46,8 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
                 window.location.href = 'empresa.html';
                 break;
             case 'admin':
-                window.location.href = 'admin.html';
-                break;
+               window.location.href = 'admin.html';
+                break; 
         }
     } else {
         messageEl.textContent = 'Credenciais inválidas!';
