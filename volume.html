@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biord - Validar Volume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" type="imagex/png" href="./assets/iconbiord.ico.ico">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-lg w-full text-center">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Biord - Validar Volume</h1>
+        
+        <!-- Botões para selecionar foto ou tirar foto diretamente -->
+        <input type="file" id="fileInput" accept="image/*" hidden>
+        <button onclick="document.getElementById('fileInput').click()" 
+                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            Selecionar Foto
+        </button>
+        
+        <!-- Novo botão para tirar foto -->
+        <button onclick="takePhoto()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mt-4 sm:hidden">
+            Tirar Foto
+        </button>
+
+        <div id="previewContainer" class="mt-4"></div>
+
+        <button id="analyzeButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 mt-4 hidden">
+            Analisar Garrafa
+        </button>
+
+        <div id="results" class="hidden bg-gray-50 p-4 rounded-lg mt-4">
+            <h3 class="text-lg font-semibold text-gray-700">Resultado da Análise:</h3>
+            <p class="text-gray-600">Volume Estimado: <span id="volumeValue" class="font-bold">0</span> ml</p>
+            <p class="text-gray-600">Confiança: <span id="confidenceValue" class="font-bold">0</span>%</p>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const resultsDiv = document.getElementById('results');
+        const analyzeButton = document.getElementById('analyzeButton');
+        const HF_TOKEN = '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';
+
+        // Função para converter o arquivo para base64
+        function convertToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result.split(',')[1]); // Retira a parte do prefixo base64
+                reader.onerror = reject;
+                reader.readAsDataURL(file); // Lê o arquivo como base64
+            });
+        }
+
+        async function analyzeImage(base64Image) {
+            // Envia a imagem convertida em base64 para a API
+            const response = await fetch('https://api-inference.huggingface.co/models/facebook/detr-resnet-50', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${HF_TOKEN}`,
+                },
+                body: JSON.stringify({ inputs: base64Image }) // Envia o base64 da imagem
+            });
+
+            const data = await response.json();
+            console.log("Raw AI response:", data);
+            return data;
+        }
+
+        function processImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.className = 'w-full max-w-xs mx-auto mt-4 rounded-lg';
+                previewContainer.innerHTML = '';
+                previewContainer.appendChild(img);
+
+                analyzeButton.classList.remove('hidden'); // Exibe o botão de análise
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Função para tirar foto no smartphone
+        function takePhoto() {
+            const video = document.createElement('video');
+            const constraints = {
+                video: { facingMode: 'environment' }
+            };
+
+            // Acessa a câmera traseira
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then((stream) => {
+                    video.srcObject = stream;
+                    video.play();
+
+                    // Após alguns segundos, tira a foto
+                    setTimeout(() => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        const context = canvas.getContext('2d');
+                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                        // Converte a imagem para base64 e chama a análise
+                        const base64Image = canvas.toDataURL('image/jpeg');
+                        analyzeImage(base64Image).then(analysis => {
+                            processImageFromCamera(base64Image);
+                            handleAnalysis(analysis);
+                        });
+                        video.srcObject.getTracks().forEach(track => track.stop()); // Para o stream
+                    }, 1000); // Espera 1 segundo antes de tirar a foto
+                })
+                .catch(err => console.error('Erro ao acessar a câmera:', err));
+        }
+
+        function processImageFromCamera(base64Image) {
+            const img = new Image();
+            img.src = base64Image;
+            img.className = 'w-full max-w-xs mx-auto mt-4 rounded-lg';
+            previewContainer.innerHTML = '';
+            previewContainer.appendChild(img);
+
+            analyzeButton.classList.remove('hidden'); // Exibe o botão de análise
+        }
+
+        async function analyzeBottle() {
+            const file = document.getElementById('fileInput').files[0]; // Obtém o arquivo selecionado
+            if (!file) {
+                console.error('Nenhum arquivo foi selecionado.');
+                return;
+            }
+
+            // Converte o arquivo para base64
+            const base64Image = await convertToBase64(file);
+
+            // Envia a imagem para a API para análise
+            const analysis = await analyzeImage(base64Image);
+            console.log("Resposta da API:", analysis); // Adiciona um log para verificar a resposta
+
+            // Verifica se a resposta é um array e se contém garrafas
+            if (!Array.isArray(analysis)) {
+                console.error('A análise retornou dados inválidos:', analysis);
+                return;
+            }
+
+            // Filtra as garrafas encontradas na imagem
+            const bottles = analysis.filter(item => item.label.toLowerCase() === 'bottle');
+            if (bottles.length === 0) {
+                console.error('Nenhuma garrafa encontrada na imagem.');
+                return;
+            }
+
+            // Processa o resultado da análise para estimar o volume
+            const oilData = estimateOilVolume(bottles);
+
+            // Exibe o volume estimado e a confiança
+            document.getElementById('volumeValue').textContent = oilData.volume;
+            document.getElementById('confidenceValue').textContent = oilData.confidence;
+            resultsDiv.classList.remove('hidden'); // Exibe os resultados
+        }
+
+        // Atualiza a função estimateOilVolume para processar as garrafas
+        function estimateOilVolume(bottles) {
+            // Verifica se bottles é um array válido e se contém objetos com as propriedades necessárias
+            if (!Array.isArray(bottles) || bottles.length === 0) {
+                return { volume: 0, confidence: 0 };
+            }
+
+            // Aqui, assumimos que a primeira garrafa encontrada é a correta
+            const bottle = bottles[0];
+
+            // Verifica se a 'box' contém as coordenadas corretas
+            const { xmin, ymin, xmax, ymax } = bottle.box;
+            if (xmin === undefined || ymin === undefined || xmax === undefined || ymax === undefined) {
+                console.error('Caixa de coordenadas inválida para a garrafa:', bottle);
+                return { volume: 0, confidence: 0 };
+            }
+
+            const height = ymax - ymin;
+            const estimatedVolume = Math.max(100, Math.min(2000, height * 10)); // Estima o volume com base na altura da caixa
+
+            return { volume: estimatedVolume.toFixed(2), confidence: (bottle.score * 100).toFixed(2) };
+        }
+
+        // Quando o arquivo é selecionado
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) processImage(file);
+        });
+
+        // Quando o botão de análise é clicado
+        analyzeButton.addEventListener('click', analyzeBottle);
+    </script>
+</body>
+</html>

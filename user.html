@@ -47,38 +47,65 @@
     <!-- Sidebar -->
     <div id="sidebar" class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-72 bg-white shadow-xl transform -translate-x-full md:translate-x-0 sidebar-transition z-40">
 
-    <button id="closeMenuButton" class="md:hidden absolute top-4 right-4 text-gray-600 hover:text-gray-800">
-        <i class="fas fa-times text-xl"></i>
-    </button>
-
-    <div class="p-6 md:p-8 max-w-2xl mx-auto">
-        <div class="text-center mb-8">
-            <!-- Avatar com efeito de destaque -->
-            <div class="relative inline-block mb-6 group">
-                <img src="assets/user.webp" 
-                     class="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto border-4 border-white shadow-xl transform transition-all duration-300 group-hover:scale-105"
-                     alt="Avatar do usuário">
-                <div class="absolute inset-0 rounded-full border-4 border-transparent bg-gradient-to-r from-blue-200 to-green-200 opacity-0 group-hover:opacity-100 -z-10 transition-opacity duration-300"></div>
-            </div>
+        <!-- Botão Fechar Menu (existente) -->
+        <button id="closeMenuButton" class="md:hidden absolute top-4 right-4 text-gray-600 hover:text-gray-800">
+            <i class="fas fa-times text-xl"></i>
+        </button>
     
-            <!-- Informações do usuário -->
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-1" id="userName"></h2>
-            <p class="text-gray-500 md:text-lg" id="userPhone"></p>
+        <div class="p-6 md:p-8 max-w-2xl mx-auto">
+            <div class="text-center mb-8">
+                <!-- Avatar -->
+                <div class="relative inline-block mb-6 group">
+                    <img src="assets/user.webp" 
+                         class="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto border-4 border-white shadow-xl transform transition-all duration-300 group-hover:scale-105"
+                         alt="Avatar">
+                    <div class="absolute inset-0 rounded-full border-4 border-transparent bg-gradient-to-r from-blue-200 to-green-200 opacity-0 group-hover:opacity-100 -z-10 transition-opacity duration-300"></div>
+                </div>
     
-            <!-- Card de pontos -->
-            <div class="mt-6 bg-gradient-to-br from-blue-600 to-blue-300 p-6 rounded-2xl shadow-lg text-white transform transition hover:shadow-xl hover:-translate-y-1 duration-300">
-                <div class="flex items-center justify-center gap-3">
-                    <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                        <i class="fas fa-star text-xl"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-semibold opacity-90">PONTOS ACUMULADOS</p>
-                        <p class="text-3xl md:text-4xl font-bold mt-1" id="userPoints"></p>
+                <!-- Informações -->
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-1" id="userName"></h2>
+                <p class="text-gray-500 md:text-lg" id="userPhone"></p>
+    
+                <!-- Card Pontos -->
+                <div class="mt-6 bg-gradient-to-br from-blue-600 to-blue-300 p-6 rounded-2xl shadow-lg text-white transform transition hover:shadow-xl hover:-translate-y-1 duration-300">
+                    <div class="flex items-center justify-center gap-3">
+                        <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                            <i class="fas fa-star text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold opacity-90">PONTOS ACUMULADOS</p>
+                            <p class="text-3xl md:text-4xl font-bold mt-1" id="userPoints"></p>
+                        </div>
                     </div>
                 </div>
+    
+                <!-- Botão para Acionar Modal -->
+                <button onclick="openModal()" class="mt-6 w-full px-6 py-3 bg-gradient-to-br from-blue-600 to-blue-300 text-white rounded-lg shadow-md hover:shadow-lg transition duration-300 hover:scale-105">
+                    <i class="fas fa-chart-bar mr-2"></i>
+                    Descartar
+                </button>
             </div>
         </div>
     </div>
+    
+    <!-- Modal Responsivo -->
+    <div id="volumeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 overflow-y-auto">
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden transform transition-all">
+                <!-- Cabeçalho Modal -->
+                <div class="flex justify-between items-center p-6 border-b">
+                    <h3 class="text-2xl font-bold text-gray-800">Volume</h3>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Conteúdo Responsivo -->
+                <div class="h-[80vh]">
+                    <iframe src="volume.html" class="w-full h-full border-none" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Overlay Mobile -->
@@ -319,6 +346,27 @@
                      ' pontos para resgatar este cupom.');
             }
         }
+
+         // Funções para Controle do Modal
+    function openModal() {
+        document.getElementById('volumeModal').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('volumeModal').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    // Fechar modal ao clicar fora
+    window.onclick = function(event) {
+        const modal = document.getElementById('volumeModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+
+    
 
         // Inicia o sistema
         init();
