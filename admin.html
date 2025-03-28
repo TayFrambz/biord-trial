@@ -62,23 +62,29 @@
 
             <!-- Menu -->
             <nav class="space-y-2">
-                <a data-view="dashboard" class="dashboard-link active flex items-center p-3 mb-2 bg-indigo-50 text-indigo-700 rounded-lg transition-all">
+                <a data-view="dashboard" class="dashboard-link active flex items-center p-3 mb-2 bg-indigo-50 text-indigo-700 rounded-lg transition-all cursor-pointer">
                     <i class="fas fa-chart-pie w-6 text-center mr-2"></i> Dashboard
                 </a>
                 <br>
-                <a data-view="schedules" class="dashboard-link sidebar-link flex items-center p-3 hover:bg-gray-50 rounded-lg group">
+                <a data-view="schedules" class="dashboard-link sidebar-link flex items-center p-3 hover:bg-gray-50 rounded-lg group cursor-pointer">
                     <i class="fas fa-calendar-alt text-blue-500 w-6 text-center mr-2 hover:bg-gray-50 rounded-lg group"></i>
                     <span class="text-gray-700 group-hover:text-blue-600">Agendamentos</span>
                 </a>
                 <br>
-                <a data-view="users" class="dashboard-link sidebar-link flex items-center p-3 hover:bg-gray-50 rounded-lg group">
-                    <i class="fas fa-users text-green-500 w-6 text-center mr-2"></i>
+                <a data-view="users" class="dashboard-link sidebar-link flex items-center p-3 hover:bg-gray-50 rounded-lg group cursor-pointer">
+                    <i class="fas fa-users text-pink-500 w-6 text-center mr-2"></i>
                     <span class="text-gray-700 group-hover:text-green-600">Usuários</span>
                 </a>
                 <br>
-                <a data-view="companies" class="dashboard-link sidebar-link flex items-center p-3 hover:bg-gray-50 rounded-lg group">
+                <a data-view="companies" class="dashboard-link sidebar-link flex items-center p-3 hover:bg-gray-50 rounded-lg group cursor-pointer">
                     <i class="fas fa-building text-purple-500 w-6 text-center mr-2"></i>
                     <span class="text-gray-700 group-hover:text-purple-600">Empresas</span>
+                </a>
+                <br>
+                <a data-view="pevs" class="dashboard-link sidebar-link flex items-center p-3 hover:bg-gray-50 rounded-lg group cursor-pointer">
+                    <i class="fas fa-trash text-green-500 w-6 text-center"></i>
+                    <span class="text-gray-700 group-hover:text-purple-600 flex-1">PEVs</span>
+                    
                 </a>
             </nav>
         </div>
@@ -99,6 +105,10 @@
                     <div class="bg-white p-6 rounded-xl shadow-md">
                         <p class="text-gray-600">Empresas Cadastradas</p>
                         <p class="text-3xl font-bold text-blue-600" id="totalCompanies">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <p class="text-gray-600">PEVs</p>
+                        <p class="text-3xl font-bold text-blue-600" id="totalPevs">0</p>
                     </div>
                     <div class="bg-white p-6 rounded-xl shadow-md">
                         <p class="text-gray-600">Usuários Cadastrados</p>
@@ -131,7 +141,7 @@
                                 <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
                                      style="height: 40%">
                                     <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">85</span>
-                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">PEVs</span>
                                 </div>
                             </div>
                             <span class="mt-2 text-gray-600 font-medium">Nov/24</span>
@@ -148,7 +158,7 @@
                                 <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
                                      style="height: 85%">
                                     <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">168</span>
-                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">PEVs</span>
                                 </div>
                             </div>
                             <span class="mt-2 text-gray-600 font-medium">Dez/24</span>
@@ -165,7 +175,7 @@
                                 <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
                                      style="height: 60%">
                                     <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">120</span>
-                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">PEVs</span>
                                 </div>
                             </div>
                             <span class="mt-2 text-gray-600 font-medium">Jan/25</span>
@@ -182,7 +192,7 @@
                                 <div class="w-1/2 bg-pink-500 hover:bg-pink-600 transition-colors relative rounded-t"
                                      style="height: 75%">
                                     <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-gray-600">150</span>
-                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">Usuários</span>
+                                    <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-xs">PEVs</span>
                                 </div>
                             </div>
                             <span class="mt-2 text-gray-600 font-medium">Fev/25</span>
@@ -197,7 +207,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="w-4 h-4 bg-pink-500 rounded-sm"></div>
-                            <span class="text-sm text-gray-600">Usuários</span>
+                            <span class="text-sm text-gray-600">PEVs</span>
                         </div>
                     </div>
                 </div>
@@ -230,6 +240,16 @@
                 <div class="bg-white p-6 rounded-xl shadow-md">
                     <div id="companiesList" class="space-y-4">
                         <!-- Empresas serão preenchidos por JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- PEVs -->
+            <div id="pevsView" class="view hidden">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">PEVs Cadastrados</h1>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div id="pevsList" class="space-y-4">
+                        <!-- Pevs serão preenchidos por JS -->
                     </div>
                 </div>
             </div>
@@ -277,6 +297,68 @@
                     pendingCollection: 150
                 }
             ],
+            pevs: [
+                {
+                    name: "Registro: 001",
+                    address: "Rua Sustentável, 123",
+                    totalCollected: 700,
+                    pendingCollection: 100
+                },
+                {
+                    name: "Registro: 002",
+                    address: "Av. Ecológica, 456",
+                    totalCollected: 600,
+                    pendingCollection: 150
+                },
+                {
+                    name: "Registro: 003",
+                    address: "Av. Ecológica, 200",
+                    totalCollected: 300,
+                    pendingCollection: 0
+                },
+                {
+                    name: "Registro: 004",
+                    address: "Rua Futuro, 65",
+                    totalCollected: 800,
+                    pendingCollection: 90
+                },
+                {
+                    name: "Registro: 005",
+                    address: "Rua Unidos, 423",
+                    totalCollected: 480,
+                    pendingCollection: 120
+                },
+                {
+                    name: "Registro: 006",
+                    address: "Av. Vida, 789",
+                    totalCollected: 700,
+                    pendingCollection: 150
+                },
+                {
+                    name: "Registro: 007",
+                    address: "Rua Unidos, 423",
+                    totalCollected: 600,
+                    pendingCollection: 80
+                },
+                {
+                    name: "Registro: 008",
+                    address: "Rua Unidos, 423",
+                    totalCollected: 525,
+                    pendingCollection: 90
+                },
+                {
+                    name: "Registro: 009",
+                    address: "Rua Unidos, 423",
+                    totalCollected: 200,
+                    pendingCollection: 100
+                },
+                {
+                    name: "Registro: 010",
+                    address: "Rua Unidos, 423",
+                    totalCollected: 400,
+                    pendingCollection: 0
+                },
+            ],
             users: [
                 { name: "Carlos Silva", collected: 15 },
                 { name: "Maria Santos", collected: 8 },
@@ -297,8 +379,10 @@
             // Atualiza estatísticas
             document.getElementById('totalCompanies').textContent = mockData.companies.length;
             document.getElementById('totalUsers').textContent = mockData.users.length;
-            document.getElementById('totalCollected').textContent = mockData.companies.reduce((acc, c) => acc + c.totalCollected, 0);
+            document.getElementById('totalCollected').textContent = 
+            [...mockData.companies, ...mockData.pevs].reduce((acc, c) => acc + c.totalCollected, 0);
             document.getElementById('averagePerUser').textContent = (mockData.users.reduce((acc, u) => acc + u.collected, 0) / mockData.users.length).toFixed(1);
+            document.getElementById('totalPevs').textContent = mockData.pevs.length;
 
             // Renderiza agendamentos
             const schedulesList = document.getElementById('schedulesList');
@@ -421,6 +505,65 @@
     </div>
 </div>
             `).join('');
+
+            // Renderiza PEVs
+            const pevsList = document.getElementById('pevsList');
+            pevsList.innerHTML = mockData.pevs.map(c => `
+                
+
+                <div class="bg-gradient-to-br from-grey to-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-blue-400 group">
+    <div class="flex items-start gap-4">
+        <!-- Ícone -->
+        <div class="shrink-0 p-3 bg-blue-100 rounded-full">
+            <i class="fas fa-building text-blue-600 text-xl"></i>
+        </div>
+
+        <!-- Conteúdo -->
+        <div class="flex-1 space-y-3">
+            <h3 class="text-xl font-bold text-blue-800">${c.name}</h3>
+            
+            <div class="space-y-2">
+                <div class="flex items-center gap-2 text-blue-600">
+                    <i class="fas fa-map-marker-alt text-sm"></i>
+                    <p class="text-sm">${c.address}</p>
+                </div>
+
+                <div class="flex flex-wrap gap-4">
+                    <!-- Total Coletado -->
+                    <div class="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full">
+                        <i class="fas fa-check-circle text-blue-500"></i>
+                        <span class="text-sm font-medium text-blue-800">
+                            ${c.totalCollected}L coletados
+                        </span>
+                    </div>
+
+                    <!-- Pendente -->
+                    <div class="flex items-center gap-2 bg-blue-100/50 px-3 py-1.5 rounded-full">
+                        <i class="fas fa-clock text-blue-400"></i>
+                        <span class="text-sm font-medium text-blue-800">
+                            ${c.pendingCollection}L pendentes
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <!-- Status -->
+${c.pendingCollection > 0 ? `
+<div class="flex items-center gap-1 text-sm text-blue-600">
+    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+    <span>Ativo</span>
+</div>
+` : `
+<div class="flex items-center gap-1 text-sm text-red-600">
+    <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+    <span>Inativo</span>
+</div>
+`}
+    </div>
+</div>
+            `).join('');
+        
         }
 
         // Controle de Menu Mobile

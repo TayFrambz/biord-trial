@@ -34,6 +34,11 @@
             <p class="text-gray-600">Volume Estimado: <span id="volumeValue" class="font-bold">0</span> ml</p>
             <p class="text-gray-600">Confiança: <span id="confidenceValue" class="font-bold">0</span>%</p>
         </div>
+
+        <button onclick="confirmAnalysis()" 
+        class="mt-4 bg-blue-800 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+    Confirmar e Fechar
+</button>
     </div>
 
     <script>
@@ -42,6 +47,34 @@
         const resultsDiv = document.getElementById('results');
         const analyzeButton = document.getElementById('analyzeButton');
         const HF_TOKEN = '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';
+
+           // Função para confirmar análise
+           function confirmAnalysis() {
+            const volume = parseFloat(document.getElementById('volumeValue').textContent);
+            if (volume > 0) {
+                const pointsToAdd = Math.floor(volume);
+                
+                // Atualiza pontos no parent
+                window.parent.postMessage({
+                    type: 'pointsUpdated',
+                    points: JSON.parse(localStorage.getItem('currentUser')).points + pointsToAdd
+                }, '*');
+
+                // Fecha modal
+                window.parent.postMessage({ type: 'closeModal' }, '*');
+            }
+        }
+
+        // Modificação na função analyzeBottle
+        async function analyzeBottle() {
+            // ... (código anterior mantido) ...
+
+            // Adiciona pontos após análise
+            const volume = parseFloat(document.getElementById('volumeValue').textContent);
+            if (volume > 0) {
+                document.getElementById('results').classList.remove('hidden');
+            }
+        }
 
         // Função para converter o arquivo para base64
         function convertToBase64(file) {
@@ -160,6 +193,8 @@
             document.getElementById('volumeValue').textContent = oilData.volume;
             document.getElementById('confidenceValue').textContent = oilData.confidence;
             resultsDiv.classList.remove('hidden'); // Exibe os resultados
+
+            
         }
 
         // Atualiza a função estimateOilVolume para processar as garrafas

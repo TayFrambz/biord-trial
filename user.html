@@ -1,375 +1,420 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <title>Biord | Área do Usuário</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="shortcut icon" type="imagex/png" href="./assets/iconbiord.ico.ico">
-    <style>
-        @keyframes slideIn {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
-        }
-        .animate-slide { animation: slideIn 0.3s ease-out; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <title>Biord | Área do Usuário</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="shortcut icon" type="imagex/png" href="./assets/iconbiord.ico.ico">
+  <style>
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    .animate-slide { animation: slideIn 0.3s ease-out; }
+  </style>
 </head>
 <body class="bg-gray-50">
-    <script>
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (!currentUser || currentUser.type !== 'user') window.location.href = 'index.html';
-    </script>
+  <script>
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser || currentUser.type !== 'user') window.location.href = 'index.html';
+  </script>
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 bottom-5 left-0 right-0 bg-white shadow-sm z-50 h-16">
-        <div class="flex items-center justify-between px-4 h-16">
-            <!-- Botão Menu Mobile -->
-            <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-800">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
-            
-            <!-- Logo -->
-            <div class="flex items-center gap-2">
-                <img src="assets/iconbiord.ico.ico" class="h-8 w-8" alt="Logo">
-                <span class="font-bold text-gray-800">Biord</span>
-            </div>
+  <!-- Navbar -->
+  <nav class="fixed top-0 bottom-5 left-0 right-0 bg-white shadow-sm z-50 h-16">
+    <div class="flex items-center justify-between px-4 h-16">
+      <!-- Botão Menu Mobile -->
+      <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-800">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+      
+      <!-- Logo -->
+      <div class="flex items-center gap-2">
+        <img src="assets/iconbiord.ico.ico" class="h-8 w-8" alt="Logo">
+        <span class="font-bold text-gray-800">Biord</span>
+      </div>
 
-            <!-- Botão Sair -->
-            <button id="logoutButton" class="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-purple-600 group transition-all duration-200">
-                <i class="fas fa-sign-out-alt text-sm group-hover:-translate-x-0.5"></i>
-                <span class="font-medium border-b border-transparent group-hover:border-purple-400">Sair</span>
-            </button>
+      <!-- Botão Sair -->
+      <button id="logoutButton" class="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-purple-600 group transition-all duration-200">
+        <i class="fas fa-sign-out-alt text-sm group-hover:-translate-x-0.5"></i>
+        <span class="font-medium border-b border-transparent group-hover:border-purple-400">Sair</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-72 bg-white shadow-xl transform -translate-x-full md:translate-x-0 sidebar-transition z-40">
+    <!-- Botão Fechar Menu -->
+    <button id="closeMenuButton" class="md:hidden absolute top-4 right-4 text-gray-600 hover:text-gray-800">
+      <i class="fas fa-times text-xl"></i>
+    </button>
+  
+    <div class="p-6 md:p-8 max-w-2xl mx-auto">
+      <div class="text-center mb-8">
+        <!-- Avatar -->
+        <div class="relative inline-block mb-6 group">
+          <img src="assets/user.webp" 
+               class="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto border-4 border-white shadow-xl transform transition-all duration-300 group-hover:scale-105"
+               alt="Avatar">
+          <div class="absolute inset-0 rounded-full border-4 border-transparent bg-gradient-to-r from-blue-200 to-green-200 opacity-0 group-hover:opacity-100 -z-10 transition-opacity duration-300"></div>
         </div>
-    </nav>
-
-    <!-- Sidebar -->
-    <div id="sidebar" class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-72 bg-white shadow-xl transform -translate-x-full md:translate-x-0 sidebar-transition z-40">
-
-        <!-- Botão Fechar Menu (existente) -->
-        <button id="closeMenuButton" class="md:hidden absolute top-4 right-4 text-gray-600 hover:text-gray-800">
-            <i class="fas fa-times text-xl"></i>
+  
+        <!-- Informações -->
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-1" id="userName"></h2>
+        <p class="text-gray-500 md:text-lg" id="userPhone"></p>
+  
+        <!-- Card Pontos -->
+        <div class="mt-6 bg-gradient-to-br from-blue-600 to-blue-300 p-6 rounded-2xl shadow-lg text-white transform transition hover:shadow-xl hover:-translate-y-1 duration-300">
+          <div class="flex items-center justify-center gap-3">
+            <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+              <i class="fas fa-star text-xl"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold opacity-90">PONTOS ACUMULADOS</p>
+              <p class="text-3xl md:text-4xl font-bold mt-1" id="userPoints"></p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Botão para Acionar Modal de Volume -->
+        <button onclick="openVolumeModal()" class="mt-6 w-full px-6 py-3 bg-gradient-to-br from-blue-600 to-blue-300 text-white rounded-lg shadow-md hover:shadow-lg transition duration-300 hover:scale-105">
+          <i class="fas fa-chart-bar mr-2"></i>
+          Descartar
         </button>
-    
-        <div class="p-6 md:p-8 max-w-2xl mx-auto">
-            <div class="text-center mb-8">
-                <!-- Avatar -->
-                <div class="relative inline-block mb-6 group">
-                    <img src="assets/user.webp" 
-                         class="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto border-4 border-white shadow-xl transform transition-all duration-300 group-hover:scale-105"
-                         alt="Avatar">
-                    <div class="absolute inset-0 rounded-full border-4 border-transparent bg-gradient-to-r from-blue-200 to-green-200 opacity-0 group-hover:opacity-100 -z-10 transition-opacity duration-300"></div>
-                </div>
-    
-                <!-- Informações -->
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-1" id="userName"></h2>
-                <p class="text-gray-500 md:text-lg" id="userPhone"></p>
-    
-                <!-- Card Pontos -->
-                <div class="mt-6 bg-gradient-to-br from-blue-600 to-blue-300 p-6 rounded-2xl shadow-lg text-white transform transition hover:shadow-xl hover:-translate-y-1 duration-300">
-                    <div class="flex items-center justify-center gap-3">
-                        <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                            <i class="fas fa-star text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm font-semibold opacity-90">PONTOS ACUMULADOS</p>
-                            <p class="text-3xl md:text-4xl font-bold mt-1" id="userPoints"></p>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Botão para Acionar Modal -->
-                <button onclick="openModal()" class="mt-6 w-full px-6 py-3 bg-gradient-to-br from-blue-600 to-blue-300 text-white rounded-lg shadow-md hover:shadow-lg transition duration-300 hover:scale-105">
-                    <i class="fas fa-chart-bar mr-2"></i>
-                    Descartar
-                </button>
-            </div>
-        </div>
+      </div>
     </div>
-    
-    <!-- Modal Responsivo -->
-    <div id="volumeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 overflow-y-auto">
-        <div class="relative min-h-screen flex items-center justify-center p-4">
-            <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden transform transition-all">
-                <!-- Cabeçalho Modal -->
-                <div class="flex justify-between items-center p-6 border-b">
-                    <h3 class="text-2xl font-bold text-gray-800">Volume</h3>
-                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times text-2xl"></i>
-                    </button>
-                </div>
-                
-                <!-- Conteúdo Responsivo -->
-                <div class="h-[80vh]">
-                    <iframe src="volume.html" class="w-full h-full border-none" loading="lazy"></iframe>
-                </div>
-            </div>
+  </div>
+  
+  <!-- Modal de Volume -->
+  <div id="volumeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 overflow-y-auto">
+    <div class="relative max-w-md mx-auto my-20 bg-white rounded-xl shadow-2xl overflow-hidden transform transition-all">
+      <!-- Cabeçalho Modal -->
+      <div class="flex justify-between items-center p-6 border-b">
+        <h3 class="text-2xl font-bold text-gray-800">Volume</h3>
+        <button onclick="closeVolumeModal()" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      <!-- Conteúdo do Modal -->
+      <div class="p-6 space-y-6">
+        <!-- Seção: Analisar Foto -->
+        <div class="border p-4 rounded">
+          <h3 class="text-xl font-bold text-gray-800 mb-2">Analisar Foto</h3>
+
+          <label for="photoInput" class="flex items-center justify-center w-full px-4 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md cursor-pointer hover:bg-blue-600 transition-colors mb-[5px]">
+            <i class="fas fa-camera mr-2"></i>
+            Selecionar Imagem
+            <input type="file" id="photoInput" accept="image/*" class="hidden" />
+          </label>
+          
+          <button onclick="analyzePhoto()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded">
+            Analisar Foto
+          </button>
         </div>
+        <!-- Seção: Inserir Manualmente -->
+        <div class="border p-4 rounded">
+          <h3 class="text-xl font-bold text-gray-800 mb-2">Inserir Manualmente</h3>
+          <label for="volumeInput" class="block text-gray-700 text-lg mb-2">Informe o volume de óleo (em ml):</label>
+          <input type="number" id="volumeInput" class="w-full p-2 border rounded mb-4" placeholder="Ex: 2000" />
+          <button onclick="validateVolume()" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded">
+            Validar Volume
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Overlay Mobile -->
-    <div id="mobileOverlay" class="hidden fixed inset-0 bg-black/50 z-30"></div>
+  <!-- Overlay Mobile -->
+  <div id="mobileOverlay" class="hidden fixed inset-0 bg-black/50 z-30"></div>
 
-    <!-- Conteúdo Principal -->
-<main class="fixed right-0 inset-y-0 pt-16 md:pt-10 w-full md:w-3/4 lg:w-3/4 overflow-y-auto scrolling-touch">
+  <!-- Conteúdo Principal -->
+  <main class="fixed right-0 inset-y-0 pt-16 md:pt-10 w-full md:w-3/4 lg:w-3/4 overflow-y-auto scrolling-touch">
     <div class="p-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-8">Restaurantes Parceiros</h1>
+      <h1 class="text-3xl font-bold text-gray-800 mb-8">Restaurantes Parceiros</h1>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="restaurantsGrid">
+        <!-- Cards serão preenchidos por JS -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal do Restaurante -->
+  <div id="restaurantModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md p-6 animate-slide">
+      <div class="flex justify-between items-start mb-4">
+        <h2 class="text-2xl font-bold text-gray-800" id="modalTitle"></h2>
+        <button onclick="closeRestaurantModal()" class="text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      
+      <img id="modalImage" src="" alt="" class="w-full h-48 object-cover rounded-xl mb-4 shadow-md">
+      
+      <div class="space-y-3 text-gray-600">
+        <p><i class="fas fa-map-marker-alt text-blue-500 mr-2"></i><span id="modalAddress"></span></p>
+        <p><i class="fas fa-phone text-blue-500 mr-2"></i><span id="modalPhone"></span></p>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="restaurantsGrid">
-            <!-- Cards serão preenchidos por JS -->
+        <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+          <div>
+            <p class="font-semibold"><i class="fas fa-tag text-blue-500 mr-2"></i>Desconto</p>
+            <p class="text-2xl font-bold text-blue-600" id="modalDiscount"></p>
+          </div>
+          <div class="text-right">
+            <p class="font-semibold"><i class="fas fa-coins text-blue-500 mr-2"></i>Pontos Necessários</p>
+            <p class="text-2xl font-bold text-blue-600" id="modalPoints"></p>
+          </div>
         </div>
+      </div>
+
+      <div class="flex gap-4 mt-6 justify-center">
+        <a id="modalWhatsapp" target="_blank" class="p-3 bg-blue-100 rounded-full hover:bg-blue-200 transition">
+          <i class="fab fa-whatsapp text-blue-600 text-2xl"></i>
+        </a>
+        <a id="modalWebsite" target="_blank" class="p-3 bg-blue-100 rounded-full hover:bg-blue-200 transition">
+          <i class="fas fa-globe text-blue-600 text-2xl"></i>
+        </a>
+      </div>
+
+      <button onclick="redeemCoupon()" 
+              class="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-[1.02]">
+        RESGATAR CUPOM
+      </button>
     </div>
-</main>
+  </div>
 
-    
+  <script>
+    // Dados Mockados
+    const user = {
+      name: "Carlos Silva",
+      phone: "(11) 98765-4321",
+      points: 1450,
+      photo: "assets/user.png"
+    };
 
-    <!-- Modal do Restaurante -->
-    <div id="restaurantModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl w-full max-w-md p-6 animate-slide">
-            <div class="flex justify-between items-start mb-4">
-                <h2 class="text-2xl font-bold text-gray-800" id="modalTitle"></h2>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
+    const restaurants = [
+      {
+        id: 1,
+        name: "Eco Burger",
+        image: "https://img.freepik.com/vetores-premium/frente-de-loja-de-hamburguer-design-plano_43605-3067.jpg",
+        address: "Rua Sustentável, 123",
+        phone: "(11) 1234-5678",
+        discount: 15,
+        requiredPoints: 1000,
+        whatsapp: "551112345678",
+        website: "https://ecoburger.com"
+      },
+      {
+        id: 2,
+        name: "Green Pizza",
+        image: "https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-restaurante-de-pizza_114360-13505.jpg",
+        address: "Av. Ecológica, 456",
+        phone: "(11) 8765-4321",
+        discount: 20,
+        requiredPoints: 1500,
+        whatsapp: "551187654321",
+        website: "https://greenpizza.com"
+      },
+      {
+        id: 3,
+        name: "Blue Pizza",
+        image: "https://previews.123rf.com/images/stterryk/stterryk1609/stterryk160900136/64038060-pizza-de-fachada-de-restaurante-de-tipo-plano-pizzeria-dise%C3%B1o-frontal.jpg",
+        address: "Av. Ecológica, 200",
+        phone: "(11) 8765-4321",
+        discount: 10,
+        requiredPoints: 1300,
+        whatsapp: "551187654321",
+        website: "https://greenpizza.com"
+      },
+      {
+        id: 4,
+        name: "Restaurante Avante",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_oSOF7DSgpRDECHc9o5Qr62ZbPnT0AgY7ZA&s",
+        address: "Rua Futuro, 65",
+        phone: "(11) 8765-4321",
+        discount: 20,
+        requiredPoints: 1200,
+        whatsapp: "551187654321",
+        website: "https://restaurante.com"
+      },
+      {
+        id: 5,
+        name: "Restaurante Azul",
+        image: "https://static.vecteezy.com/system/resources/previews/019/890/138/non_2x/facade-of-restaurant-model-for-cafe-png.png",
+        address: "Rua Unidos, 423",
+        phone: "(11) 8765-4321",
+        discount: 15,
+        requiredPoints: 800,
+        whatsapp: "551187654321",
+        website: "https://restaurante.com"
+      },
+      {
+        id: 6,
+        name: "Pastelaria",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBroqhnDppcYE8iwGCdgh4QRIQkIzu28zQfA&s",
+        address: "Av. Vida, 789",
+        phone: "(11) 8765-4321",
+        discount: 5,
+        requiredPoints: 500,
+        whatsapp: "551187654321",
+        website: "https://greenpizza.com"
+      }
+      // Adicione mais restaurantes conforme necessário
+    ];
+
+    // Inicialização
+    function init() {
+      // Carrega dados do usuário
+      document.getElementById('userName').textContent = user.name;
+      document.getElementById('userPhone').textContent = user.phone;
+      document.getElementById('userPoints').textContent = user.points;
+
+      // Renderiza restaurantes
+      const grid = document.getElementById('restaurantsGrid');
+      restaurants.forEach(restaurant => {
+        grid.innerHTML += `
+          <div class="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transform transition hover:-translate-y-1 hover:shadow-lg"
+               onclick="openRestaurantModal(${restaurant.id})">
+            <img src="${restaurant.image}" alt="${restaurant.name}" class="w-full h-48 object-cover">
+            <div class="p-4">
+              <h3 class="font-bold text-lg text-gray-800">${restaurant.name}</h3>
+              <div class="flex gap-2 mt-3">
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                  <i class="fas fa-tag mr-1"></i>${restaurant.discount}% OFF
+                </span>
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                  <i class="fas fa-coins mr-1"></i>${restaurant.requiredPoints} pts
+                </span>
+              </div>
             </div>
-            
-            <img id="modalImage" src="" alt="" class="w-full h-48 object-cover rounded-xl mb-4 shadow-md">
-            
-            <div class="space-y-3 text-gray-600">
-                <p><i class="fas fa-map-marker-alt text-blue-500 mr-2"></i><span id="modalAddress"></span></p>
-                <p><i class="fas fa-phone text-blue-500 mr-2"></i><span id="modalPhone"></span></p>
-                
-                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                    <div>
-                        <p class="font-semibold"><i class="fas fa-tag text-blue-500 mr-2"></i>Desconto</p>
-                        <p class="text-2xl font-bold text-blue-600" id="modalDiscount"></p>
-                    </div>
-                    <div class="text-right">
-                        <p class="font-semibold"><i class="fas fa-coins text-blue-500 mr-2"></i>Pontos Necessários</p>
-                        <p class="text-2xl font-bold text-blue-600" id="modalPoints"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex gap-4 mt-6 justify-center">
-                <a id="modalWhatsapp" target="_blank" class="p-3 bg-blue-100 rounded-full hover:bg-blue-200 transition">
-                    <i class="fab fa-whatsapp text-blue-600 text-2xl"></i>
-                </a>
-                <a id="modalWebsite" target="_blank" class="p-3 bg-blue-100 rounded-full hover:bg-blue-200 transition">
-                    <i class="fas fa-globe text-blue-600 text-2xl"></i>
-                </a>
-            </div>
-
-            <button onclick="redeemCoupon()" 
-                    class="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-[1.02]">
-                RESGATAR CUPOM
-            </button>
-        </div>
-    </div>
-
-    <script>
-        // Dados Mockados
-        const user = {
-            name: "Carlos Silva",
-            phone: "(11) 98765-4321",
-            points: 1450,
-            photo: "assets/user.png"
-        };
-
-        const restaurants = [
-            {
-                id: 1,
-                name: "Eco Burger",
-                image: "https://img.freepik.com/vetores-premium/frente-de-loja-de-hamburguer-design-plano_43605-3067.jpg",
-                address: "Rua Sustentável, 123",
-                phone: "(11) 1234-5678",
-                discount: 15,
-                requiredPoints: 1000,
-                whatsapp: "551112345678",
-                website: "https://ecoburger.com"
-            },
-            {
-                id: 2,
-                name: "Green Pizza",
-                image: "https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-restaurante-de-pizza_114360-13505.jpg",
-                address: "Av. Ecológica, 456",
-                phone: "(11) 8765-4321",
-                discount: 20,
-                requiredPoints: 1500,
-                whatsapp: "551187654321",
-                website: "https://greenpizza.com"
-            },
-            {
-                id: 3,
-                name: "Blue Pizza",
-                image: "https://previews.123rf.com/images/stterryk/stterryk1609/stterryk160900136/64038060-pizza-de-fachada-de-restaurante-de-tipo-plano-pizzeria-dise%C3%B1o-frontal.jpg",
-                address: "Av. Ecológica, 200",
-                phone: "(11) 8765-4321",
-                discount: 10,
-                requiredPoints: 1300,
-                whatsapp: "551187654321",
-                website: "https://greenpizza.com"
-            },
-            {
-                id: 4,
-                name: "Restaurante Avante",
-                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_oSOF7DSgpRDECHc9o5Qr62ZbPnT0AgY7ZA&s",
-                address: "Rua Futuro, 65",
-                phone: "(11) 8765-4321",
-                discount: 20,
-                requiredPoints: 1200,
-                whatsapp: "551187654321",
-                website: "https://restaurante.com"
-            },
-            {
-                id: 5,
-                name: "Restaurante Azul",
-                image: "https://static.vecteezy.com/system/resources/previews/019/890/138/non_2x/facade-of-restaurant-model-for-cafe-png.png",
-                address: "Rua Unidos, 423",
-                phone: "(11) 8765-4321",
-                discount: 15,
-                requiredPoints: 800,
-                whatsapp: "551187654321",
-                website: "https://restaurante.com"
-            },
-            {
-                id: 6,
-                name: "Pastelaria",
-                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBroqhnDppcYE8iwGCdgh4QRIQkIzu28zQfA&s",
-                address: "Av. Vida, 789",
-                phone: "(11) 8765-4321",
-                discount: 5,
-                requiredPoints: 500,
-                whatsapp: "551187654321",
-                website: "https://greenpizza.com"
-            },
-            // Adicione mais 4 restaurantes seguindo o mesmo padrão
-        ];
-
-        // Inicialização
-        function init() {
-            // Carrega dados do usuário
-            document.getElementById('userName').textContent = user.name;
-            document.getElementById('userPhone').textContent = user.phone;
-            document.getElementById('userPoints').textContent = user.points;
-
-            // Renderiza restaurantes
-            const grid = document.getElementById('restaurantsGrid');
-            restaurants.forEach(restaurant => {
-                grid.innerHTML += `
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transform transition hover:-translate-y-1 hover:shadow-lg"
-                         onclick="openModal(${restaurant.id})">
-                        <img src="${restaurant.image}" alt="${restaurant.name}" 
-                             class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg text-gray-800">${restaurant.name}</h3>
-                            <div class="flex gap-2 mt-3">
-                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                                    <i class="fas fa-tag mr-1"></i>${restaurant.discount}% OFF
-                                </span>
-                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                                    <i class="fas fa-coins mr-1"></i>${restaurant.requiredPoints} pts
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // Controle de Menu Mobile
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const closeMenuButton = document.getElementById('closeMenuButton');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('mobileOverlay');
-
-        mobileMenuButton.addEventListener('click', () => {
-            sidebar.classList.remove('-translate-x-full');
-            sidebar.classList.add('animate-slide');
-            overlay.classList.remove('hidden');
-        });
-
-        closeMenuButton.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        });
-
-        overlay.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        });
-
-
-        // Logout
-        document.getElementById('logoutButton').addEventListener('click', () => {
-            localStorage.removeItem('currentUser');
-            window.location.href = 'index.html';
-        });
-
-        // Modal
-        let currentRestaurant = null;
-
-        function openModal(restaurantId) {
-            currentRestaurant = restaurants.find(r => r.id === restaurantId);
-            const modal = document.getElementById('restaurantModal');
-            modal.classList.remove('hidden');
-
-            // Preenche dados
-            document.getElementById('modalTitle').textContent = currentRestaurant.name;
-            document.getElementById('modalImage').src = currentRestaurant.image;
-            document.getElementById('modalAddress').textContent = currentRestaurant.address;
-            document.getElementById('modalPhone').textContent = currentRestaurant.phone;
-            document.getElementById('modalDiscount').textContent = `${currentRestaurant.discount}%`;
-            document.getElementById('modalPoints').textContent = currentRestaurant.requiredPoints;
-            document.getElementById('modalWhatsapp').href = `https://wa.me/${currentRestaurant.whatsapp}`;
-            document.getElementById('modalWebsite').href = currentRestaurant.website;
-        }
-
-        function closeModal() {
-            document.getElementById('restaurantModal').classList.add('hidden');
-            currentRestaurant = null;
-        }
-
-        // Sistema de Resgate
-        function redeemCoupon() {
-            if (user.points >= currentRestaurant.requiredPoints) {
-                const couponCode = `ECO-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
-                user.points -= currentRestaurant.requiredPoints;
-                
-                alert(`🎉 Cupom resgatado com sucesso!\n\nCódigo: ${couponCode}\nDesconto: ${currentRestaurant.discount}%`);
-                document.getElementById('userPoints').textContent = user.points;
-                closeModal();
-            } else {
-                alert('❌ Pontuação insuficiente!\n\nVocê precisa de mais ' + 
-                     (currentRestaurant.requiredPoints - user.points) + 
-                     ' pontos para resgatar este cupom.');
-            }
-        }
-
-         // Funções para Controle do Modal
-    function openModal() {
-        document.getElementById('volumeModal').classList.remove('hidden');
-        document.body.classList.add('overflow-hidden');
+          </div>
+        `;
+      });
     }
 
-    function closeModal() {
-        document.getElementById('volumeModal').classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
+    // Controle de Menu Mobile
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const closeMenuButton = document.getElementById('closeMenuButton');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('mobileOverlay');
+
+    mobileMenuButton.addEventListener('click', () => {
+      sidebar.classList.remove('-translate-x-full');
+      sidebar.classList.add('animate-slide');
+      overlay.classList.remove('hidden');
+    });
+
+    closeMenuButton.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    });
+
+    // Logout
+    document.getElementById('logoutButton').addEventListener('click', () => {
+      localStorage.removeItem('currentUser');
+      window.location.href = 'index.html';
+    });
+
+    // Modal do Restaurante
+    let currentRestaurant = null;
+
+    function openRestaurantModal(restaurantId) {
+      currentRestaurant = restaurants.find(r => r.id === restaurantId);
+      const modal = document.getElementById('restaurantModal');
+      modal.classList.remove('hidden');
+
+      // Preenche os dados do restaurante no modal
+      document.getElementById('modalTitle').textContent = currentRestaurant.name;
+      document.getElementById('modalImage').src = currentRestaurant.image;
+      document.getElementById('modalAddress').textContent = currentRestaurant.address;
+      document.getElementById('modalPhone').textContent = currentRestaurant.phone;
+      document.getElementById('modalDiscount').textContent = `${currentRestaurant.discount}%`;
+      document.getElementById('modalPoints').textContent = currentRestaurant.requiredPoints;
+      document.getElementById('modalWhatsapp').href = `https://wa.me/${currentRestaurant.whatsapp}`;
+      document.getElementById('modalWebsite').href = currentRestaurant.website;
     }
 
-    // Fechar modal ao clicar fora
-    window.onclick = function(event) {
-        const modal = document.getElementById('volumeModal');
-        if (event.target === modal) {
-            closeModal();
-        }
+    function closeRestaurantModal() {
+      document.getElementById('restaurantModal').classList.add('hidden');
+      currentRestaurant = null;
     }
 
-    
+    // Sistema de Resgate
+    function redeemCoupon() {
+      if (user.points >= currentRestaurant.requiredPoints) {
+        const couponCode = `ECO-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+        user.points -= currentRestaurant.requiredPoints;
+        
+        alert(`🎉 Cupom resgatado com sucesso!\n\nCódigo: ${couponCode}\nDesconto: ${currentRestaurant.discount}%`);
+        document.getElementById('userPoints').textContent = user.points;
+        closeRestaurantModal();
+      } else {
+        alert('❌ Pontuação insuficiente!\n\nVocê precisa de mais ' + 
+              (currentRestaurant.requiredPoints - user.points) + 
+              ' pontos para resgatar este cupom.');
+      }
+    }
 
-        // Inicia o sistema
-        init();
-    </script>
+    // Modal de Volume
+    function openVolumeModal() {
+      document.getElementById('volumeModal').classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeVolumeModal() {
+      document.getElementById('volumeModal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // Fecha o modal de volume ao clicar fora dele
+    window.addEventListener('click', function(event) {
+      const volumeModal = document.getElementById('volumeModal');
+      if (event.target === volumeModal) {
+        closeVolumeModal();
+      }
+    });
+
+    // Lógica para adicionar pontos com base no volume de óleo:
+    // Para cada 1000ml, o usuário ganha 100 pontos.
+    function validateVolume() {
+  const volume = parseFloat(document.getElementById('volumeInput').value);
+  if (isNaN(volume) || volume <= 0) {
+    alert('Por favor, insira um volume válido.');
+    return;
+  }
+  // Para cada 100ml, o usuário ganha 10 pontos.
+  const pointsEarned = Math.floor(volume / 100) * 10;
+  user.points += pointsEarned;
+  document.getElementById('userPoints').textContent = user.points;
+  alert(`Você ganhou ${pointsEarned} pontos!`);
+  closeVolumeModal();
+}
+
+function analyzePhoto() {
+  const photoInput = document.getElementById('photoInput');
+  if (photoInput.files.length === 0) {
+    alert('Selecione uma foto para análise.');
+    return;
+  }
+  // Simulação: em um cenário real, a imagem seria enviada para análise.
+  // Aqui simulamos um volume fixo, por exemplo, 2000 ml.
+  const simulatedVolume = 2000;
+  const pointsEarned = Math.floor(simulatedVolume / 100) * 10;
+  user.points += pointsEarned;
+  document.getElementById('userPoints').textContent = user.points;
+  alert(`Volume analisado: ${simulatedVolume} ml.\nVocê ganhou ${pointsEarned} pontos!`);
+  closeVolumeModal();
+}
+
+
+    // Inicia o sistema
+    init();
+  </script>
 </body>
 </html>
